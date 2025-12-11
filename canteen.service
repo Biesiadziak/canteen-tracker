@@ -1,0 +1,13 @@
+[Unit]
+Description=Canteen Tracker Web Server
+After=network.target
+
+[Service]
+User=esa5
+WorkingDirectory=/home/esa5/site/canteen-tracker
+ExecStart=/home/esa5/site/canteen-tracker/venv/bin/python backend/app.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

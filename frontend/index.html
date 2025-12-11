@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Menu Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Stołówka Politechniki Poznańskiej</h1>
+            <p id="date-display">Loading...</p>
+            <div class="controls">
+                <button id="theme-toggle-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
+                <button id="rescan-btn" onclick="forceRescan()">Rescan Menu</button>
+            </div>
+        </header>
+
+        <main id="menu-container">
+            <div class="loading">Checking for menu...</div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+nohup: ignoring input
+Checking for new menu (force=False)...
+Using fallback/mock data directly (Scraping disabled).
+Translating...
+Extracting dishes...
+Menu for today already exists.
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.0.224:8000
+[33mPress CTRL+C to quit[0m
+192.168.0.224 - - [11/Dec/2025 14:10:31] "GET / HTTP/1.1" 200 -
+192.168.0.224 - - [11/Dec/2025 14:10:31] "GET /styles.css HTTP/1.1" 200 -
+192.168.0.224 - - [11/Dec/2025 14:10:31] "GET /app.js HTTP/1.1" 200 -
+192.168.0.224 - - [11/Dec/2025 14:10:31] "GET /api/menu?t=1765458631882 HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:10:42] "GET / HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:10:42] "GET /styles.css HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:10:42] "GET /app.js HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:10:42] "GET /api/menu?t=1765458713376 HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:11:23] "POST /api/check-now HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:11:23] "GET /api/menu?t=1765458754490 HTTP/1.1" 200 -
+192.168.0.224 - - [11/Dec/2025 14:15:31] "GET /api/menu?t=1765458931884 HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:15:42] "GET /api/menu?t=1765459013380 HTTP/1.1" 200 -
+192.168.0.224 - - [11/Dec/2025 14:16:59] "[36mGET / HTTP/1.1[0m" 304 -
+192.168.0.224 - - [11/Dec/2025 14:16:59] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+192.168.0.224 - - [11/Dec/2025 14:16:59] "[36mGET /app.js HTTP/1.1[0m" 304 -
+192.168.0.224 - - [11/Dec/2025 14:16:59] "GET /api/menu?t=1765459019277 HTTP/1.1" 200 -
+192.168.0.153 - - [11/Dec/2025 14:20:42] "GET /api/menu?t=1765459313380 HTTP/1.1" 200 -
+192.168.0.224 - - [11/Dec/2025 14:21:58] "[36mGET / HTTP/1.1[0m" 304 -
+192.168.0.224 - - [11/Dec/2025 14:21:58] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+192.168.0.224 - - [11/Dec/2025 14:21:58] "GET /app.js HTTP/1.1" 200 -
+192.168.0.224 - - [11/Dec/2025 14:21:58] "GET /api/menu?t=1765459318605 HTTP/1.1" 200 -

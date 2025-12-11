@@ -1,0 +1,11 @@
+flask
+flask-cors
+requests
+beautifulsoup4
+googletrans==4.0.0-rc1
+duckduckgo-search
+schedule
+facebook-scraper
+lxml_html_clean
+google-generativeai
+python-dotenv
