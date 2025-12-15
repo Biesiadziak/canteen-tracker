@@ -85,10 +85,59 @@ h1 {
     letter-spacing: -0.5px;
 }
 
+.date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.date-nav button {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.date-nav button:hover:not(:disabled) {
+    background: var(--accent-hover);
+}
+
+.date-nav button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
 #date-display {
     color: var(--subtext-color);
-    margin-top: 10px;
-    font-size: 1.1em;
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    min-width: 180px;
+}
+
+#today-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+#today-btn:hover {
+    background: #219a52;
 }
 
 .menu-card {

@@ -10,8 +10,13 @@
     <div class="container">
         <header>
             <h1>Stołówka Politechniki Poznańskiej</h1>
-            <p id="date-display">Loading...</p>
+            <div class="date-nav">
+                <button id="prev-day-btn" onclick="navigateDay(-1)" title="Previous day">◀</button>
+                <p id="date-display">Loading...</p>
+                <button id="next-day-btn" onclick="navigateDay(1)" title="Next day">▶</button>
+            </div>
             <div class="controls">
+                <button id="today-btn" onclick="goToToday()">Today</button>
                 <button id="theme-toggle-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
                 <button id="rescan-btn" onclick="forceRescan()">Rescan Menu</button>
             </div>

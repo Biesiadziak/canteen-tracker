@@ -4,7 +4,7 @@ import schedule
 import time
 import threading
 from scraper import check_for_new_menu
-from models import init_db, get_latest_menu
+from models import init_db, get_latest_menu, get_menu_by_date, get_available_dates
 from dotenv import load_dotenv
 import os
 
@@ -34,10 +34,23 @@ def serve_frontend():
 
 @app.route('/api/menu', methods=['GET'])
 def get_menu():
-    menu = get_latest_menu()
+    # Check if a specific date is requested
+    date = request.args.get('date')
+    if date:
+        menu = get_menu_by_date(date)
+    else:
+        menu = get_latest_menu()
+    
     if menu:
         return jsonify(menu)
     return jsonify({"error": "No menu found"}), 404
+
+
+@app.route('/api/dates', methods=['GET'])
+def get_dates():
+    """Get list of all available menu dates."""
+    dates = get_available_dates()
+    return jsonify({"dates": dates})
 
 @app.route('/api/check-now', methods=['POST'])
 def force_check():
@@ -46,6 +59,13 @@ def force_check():
     return jsonify({"status": "checked", "new_found": result})
 
 if __name__ == '__main__':
-    # Run initial check on startup
-    check_for_new_menu()
+    # Run initial check in background thread so server starts quickly
+    def initial_check():
+        time.sleep(2)  # Wait for server to be ready
+        check_for_new_menu()
+    
+    init_thread = threading.Thread(target=initial_check)
+    init_thread.daemon = True
+    init_thread.start()
+    
     app.run(host='0.0.0.0', port=8000)

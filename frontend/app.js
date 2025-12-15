@@ -1,12 +1,98 @@
 const API_URL = '/api';
 
+// State for date navigation
+let currentDate = null;
+let availableDates = [];
+
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    loadAvailableDates();
     fetchMenu();
     
-    // Poll for updates every 5 minutes
-    setInterval(fetchMenu, 5 * 60 * 1000);
+    // Poll for updates every 5 minutes (only if viewing today)
+    setInterval(() => {
+        const today = new Date().toISOString().split('T')[0];
+        if (!currentDate || currentDate === today) {
+            fetchMenu();
+        }
+    }, 5 * 60 * 1000);
 });
+
+async function loadAvailableDates() {
+    try {
+        const response = await fetch(`${API_URL}/dates`);
+        const data = await response.json();
+        availableDates = data.dates || [];
+        updateNavButtons();
+    } catch (error) {
+        console.error("Failed to load dates:", error);
+    }
+}
+
+function updateNavButtons() {
+    const prevBtn = document.getElementById('prev-day-btn');
+    const nextBtn = document.getElementById('next-day-btn');
+    const todayBtn = document.getElementById('today-btn');
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (!currentDate) {
+        currentDate = availableDates[0] || today;
+    }
+    
+    const currentIndex = availableDates.indexOf(currentDate);
+    
+    // Disable prev if at oldest date
+    prevBtn.disabled = currentIndex === -1 || currentIndex >= availableDates.length - 1;
+    
+    // Disable next if at newest date or today
+    nextBtn.disabled = currentIndex <= 0;
+    
+    // Hide today button if already viewing today/latest
+    todayBtn.style.display = (currentDate === today || currentIndex === 0) ? 'none' : 'inline-block';
+}
+
+function navigateDay(direction) {
+    const currentIndex = availableDates.indexOf(currentDate);
+    const newIndex = currentIndex - direction; // dates are DESC, so -1 goes newer, +1 goes older
+    
+    if (newIndex >= 0 && newIndex < availableDates.length) {
+        currentDate = availableDates[newIndex];
+        fetchMenuForDate(currentDate);
+    }
+}
+
+function goToToday() {
+    const today = new Date().toISOString().split('T')[0];
+    currentDate = availableDates.includes(today) ? today : availableDates[0];
+    fetchMenuForDate(currentDate);
+}
+
+async function fetchMenuForDate(date) {
+    try {
+        document.getElementById('menu-container').innerHTML = '<div class="loading">Loading...</div>';
+        const response = await fetch(`${API_URL}/menu?date=${date}&t=${new Date().getTime()}`);
+        if (!response.ok) {
+            if (response.status === 404) throw new Error('Menu not found');
+            throw new Error(`Server error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        currentDate = data.date;
+        renderMenu(data);
+        updateNavButtons();
+        
+    } catch (error) {
+        console.error("Fetch error:", error);
+        const container = document.getElementById('menu-container');
+        container.innerHTML = `
+            <div class="error">
+                <p>No menu available for ${date}.</p>
+                <button onclick="goToToday()">Go to Latest</button>
+            </div>
+        `;
+        updateNavButtons();
+    }
+}
 
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
@@ -60,14 +146,19 @@ function updateThemeButton(theme) {
 
 async function fetchMenu() {
     try {
-        const response = await fetch(`${API_URL}/menu?t=${new Date().getTime()}`);
+        const url = currentDate 
+            ? `${API_URL}/menu?date=${currentDate}&t=${new Date().getTime()}`
+            : `${API_URL}/menu?t=${new Date().getTime()}`;
+        const response = await fetch(url);
         if (!response.ok) {
             if (response.status === 404) throw new Error('Menu not found');
             throw new Error(`Server error: ${response.status}`);
         }
         
         const data = await response.json();
+        currentDate = data.date;
         renderMenu(data);
+        updateNavButtons();
         
     } catch (error) {
         console.error("Fetch error:", error);
@@ -110,8 +201,8 @@ async function forceRescan() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ force: true })
         });
-        // Wait a bit for the backend to finish processing if needed, 
-        // though the request should wait.
+        // Reload available dates and fetch menu
+        await loadAvailableDates();
         await fetchMenu();
     } catch (error) {
         console.error("Rescan failed:", error);

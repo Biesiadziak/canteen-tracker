@@ -59,3 +59,33 @@ def get_latest_menu():
             "images": json.loads(row['image_urls'])
         }
     return None
+
+
+def get_menu_by_date(date_str):
+    """Get menu for a specific date."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM menus WHERE date = ?', (date_str,))
+    row = c.fetchone()
+    conn.close()
+    
+    if row:
+        return {
+            "date": row['date'],
+            "content_pl": row['content_pl'],
+            "content_en": row['content_en'],
+            "images": json.loads(row['image_urls'])
+        }
+    return None
+
+
+def get_available_dates():
+    """Get list of all dates that have menus."""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('SELECT date FROM menus ORDER BY date DESC')
+    rows = c.fetchall()
+    conn.close()
+    return [row[0] for row in rows]
+    return None
